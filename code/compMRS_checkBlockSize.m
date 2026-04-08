@@ -27,17 +27,17 @@ function compMRS_checkBlockSize()
         thisBlock_size = zeros(subjs,1);
         thisSNR_LW_ratio_auto = zeros(subjs,1);
         thisBlock_size_auto = zeros(subjs,1);
-        thisSubjSes = {};
+        thisSubjSes = cell(subjs, 1);
 
         for jj=1:subjs
-            if ~isempty(out{jj})
+            if ~isempty(out{jj}) && ~isempty(out{jj}{1})
                 thisSNR_LW_ratio(jj) = out{jj}{1}.SNR_LW_ratio;
                 thisBlock_size(jj) = out{jj}{1}.block_size;
                 tk = regexp(out{jj}{1}.filepath, pat, 'tokens', 'once');
                 thisSubjSes{jj} = [tk{1} ' ' tk{2} ' ' tk{3}];
             
             end
-            if ~isempty(out_auto{jj})
+            if ~isempty(out_auto{jj}) && ~isempty(out_auto{jj}{1})
                 thisSNR_LW_ratio_auto(jj) = out_auto{jj}{1}.SNR_LW_ratio;
                 thisBlock_size_auto(jj) = out_auto{jj}{1}.block_size;
                 tk = regexp(out_auto{jj}{1}.filepath, pat, 'tokens', 'once');
@@ -46,7 +46,7 @@ function compMRS_checkBlockSize()
 
 
         end
-        T = table(thisSubjSes', thisSNR_LW_ratio,thisBlock_size,thisSNR_LW_ratio_auto,thisBlock_size_auto);
+        T = table(thisSubjSes, thisSNR_LW_ratio,thisBlock_size,thisSNR_LW_ratio_auto,thisBlock_size_auto);
         writetable(T,filename,'sheet', thisDP)
     end
 end    
